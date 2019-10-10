@@ -1,0 +1,89 @@
+﻿@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+@using System.Collections.Generic;
+@using MbmStore.Models
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "index";
+}
+
+<style>
+    table {
+        display: table;
+        border-collapse: separate;
+        border-spacing: 15px;
+        border-color: gray;
+    }
+</style>
+
+<h2>Invoices</h2>
+<form method="post" asp-controller="Invoice" asp-action="index">
+    <div>
+        <select name="customer" id="customer" asp-items="@ViewData["Customers"] as List<SelectListItem>">
+        </select>
+        <button type="submit">Show invoices</button>
+    </div>
+
+    <div>
+
+        @foreach (Invoice invoice in ViewBag.Invoices)
+        {
+
+
+            decimal price = 0M;
+
+
+            <table>
+
+                <tr>
+                    <th>Customer</th>
+                    <th>Product 1</th>
+                    <th>Product 2</th>
+                    <th>Product Price 1</th>
+                    <th>Product Price 2</th>
+                    <th>Price Total</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>@invoice.Customer.Firstname @invoice.Customer.Lastname</td>
+
+                    @foreach (OrderItem product in invoice.OrderItems)
+                    {
+                        <td>@product.Product.Title</td>
+
+
+
+                    }
+
+
+
+
+                    @foreach (OrderItem product in invoice.OrderItems)
+                    {
+                        <td> @String.Format("{0:0.00}", product.Product.Price)</td>
+                        price += product.Product.Price;
+                    }
+
+                    <td>
+                        @String.Format("{0:0.00}", price)
+                    </td>
+
+
+
+                </tr>
+            </table>
+
+        }
+
+
+    </div>
+
+
+
+
+
+</form>
+
+
+
+
+
